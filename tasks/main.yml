@@ -1,0 +1,7 @@
+---
+# tasks file for video-satellite-pxe-with-ansible-ks
+- include: install-software.yml
+- include: configure-custom.yml
+- include: motd.yml
+- include: issue.yml
+- include: reboot.yml

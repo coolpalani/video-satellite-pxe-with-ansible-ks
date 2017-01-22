@@ -1,0 +1,42 @@
+---
+- name: "nanorc config for syntax highlighting"
+  template:
+    src: templates/nanorc
+    dest: "/etc/nanorc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "json syntax highlighting for nano"
+  template:
+    src: templates/json.nanorc
+    dest: "/usr/share/nano/json.nanorc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "yaml syntax highlighting for nano"
+  template:
+    src: templates/yaml.nanorc
+    dest: "/usr/share/nano/yaml.nanorc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "screenrc file for root"
+  template:
+    src: templates/screenrc
+    dest: "/root/.screenrc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "screenrc file for skel"
+  template:
+    src: templates/screenrc
+    dest: "/etc/skel/.screenrc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+

@@ -1,0 +1,16 @@
+---
+- name: installing the required software
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - libselinux-python
+    - nano
+    - screen
+
+- name: updating all packages if this is our first run ever
+  yum:
+    name: "*"
+    state: latest
+  when: rebootrequired is defined and rebootrequired == 'yes' and ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
+

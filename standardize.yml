@@ -1,0 +1,9 @@
+---
+- name: Standardizing Servers to our defined corporate build
+  hosts: all
+  vars_files:
+    - defaults/main.yml
+    - vars/main.yml
+  remote_user: root
+  tasks:
+    - include: tasks/main.yml
