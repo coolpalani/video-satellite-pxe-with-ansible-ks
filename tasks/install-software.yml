@@ -1,5 +1,5 @@
 ---
-- name: installing the required software
+- name: "installing the required software"
   yum:
     name: "{{ item }}"
     state: latest
@@ -8,9 +8,9 @@
     - nano
     - screen
 
-- name: updating all packages if this is our first run ever
+- name: "updating all packages if this is our first run ever"
   yum:
     name: "*"
     state: latest
-  when: rebootrequired is defined and rebootrequired == 'yes' and ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
+  when: rebootrequired is defined and rebootrequired == 'yes' and ansible_os_family == "RedHat"
 
