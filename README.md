@@ -3,4 +3,4 @@ Examples to go along with the video, demonstrating Satellite PXE provisioning pl
 
 These files supplement this video:
 
-https://www.youtube.com/watch?v=OEI5CrnY0yk
+https://youtu.be/cbJmBMk21y8
