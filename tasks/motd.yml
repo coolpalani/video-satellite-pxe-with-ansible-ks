@@ -1,0 +1,9 @@
+---
+- name: "copy custom MOTD file"
+  template:
+    src: templates/motd
+    dest: "/etc/motd"
+    owner: root
+    group: root
+    mode: 0644
+

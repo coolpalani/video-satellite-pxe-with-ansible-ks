@@ -1,0 +1,34 @@
+---
+- name: "nanorc config for syntax highlighting"
+  template:
+    src: templates/nanorc
+    dest: "/etc/nanorc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "json syntax highlighting for nano"
+  template:
+    src: templates/json.nanorc
+    dest: "/usr/share/nano/json.nanorc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "yaml syntax highlighting for nano"
+  template:
+    src: templates/yaml.nanorc
+    dest: "/usr/share/nano/yaml.nanorc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "sshd_config file"
+  copy:
+    src: "templates/sshd_config"
+    dest: "/etc/ssh/sshd_config"
+    owner: root
+    group: wheel
+    mode: 600
+    backup: yes
+

@@ -1,0 +1,24 @@
+---
+- name: "standardized root password"
+  user:
+    name: root
+    password: '$5$mlFSW107$Ge3j8rXtQ/wNuvT7YU9rr1AJRLqcOikx19xQk7eQ3c1'
+    generate_ssh_key: yes
+
+- name: "screenrc file for root"
+  template:
+    src: templates/screenrc
+    dest: "/root/.screenrc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: "screenrc file for skel"
+  template:
+    src: templates/screenrc
+    dest: "/etc/skel/.screenrc"
+    owner: root
+    group: wheel
+    mode: 0644
+
+
