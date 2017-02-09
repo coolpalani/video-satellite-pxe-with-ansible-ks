@@ -47,7 +47,7 @@ cat << EOF > /etc/rc.d/rc3.d/S99ansible-firstboot
 EOF
 
 
-# Make the script bootable
+# Make the script executable
 chmod +x /etc/rc.d/rc3.d/S99ansible-firstboot
 
 
