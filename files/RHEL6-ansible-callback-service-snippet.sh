@@ -4,9 +4,8 @@
 ###	Basic service example to create the ansible-firstboot service.
 ###	This is also included in the adjacent full kickstart file, but
 ###	this exanple is just the Ansible callback service.  This will
-###	create two files:
-###		/usr/lib/systemd/system/ansible-firstboot.json
-###		/usr/lib/systemd/system/ansible-firstboot.service
+###	create the file:
+###		/etc/rc.d/rc3.d/S99ansible-firstboot
 ###	
 ###	The json is passed as the payload to the curl command when the
 ###	api callback is made.  We can squeeze in whatever variables we
