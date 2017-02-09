@@ -5,4 +5,5 @@ The Ansible Role *standardize.yml* can be set up as a Job Template in Ansible To
 
 These files supplement this video:
 
-https://www.youtube.com/watch?v=Gg_1zGzhxUY
+https://youtu.be/cbJmBMk21y8
+
