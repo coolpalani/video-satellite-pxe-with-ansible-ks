@@ -41,7 +41,7 @@ cat << EOF > /etc/rc.d/rc3.d/S99ansible-firstboot
 # First boot, we run the Ansible callback
 /usr/bin/curl -k -f -H 'Content-Type: application/json' -XPOST -d '{"host_config_key": "KEV", "extra_vars": "{\"rebootrequired\": \"yes\"}"}' https://ansibletower:443/api/v1/job_templates/152/callback/
 
-# and then we remove this script, never to run again!!
+# and then this services removes itself, never to run again!!
 /bin/rm /etc/rc.d/rc3.d/S99ansible-firstboot
 
 EOF
