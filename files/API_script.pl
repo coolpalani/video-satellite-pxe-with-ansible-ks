@@ -26,7 +26,7 @@
 #  VARS TO SET:
 
 # Switch this to 1 for verbose, 0 for silent
-$output = 0;
+$output = 1;
 
 # user credentials for the limited account, entered as     user:password
 $userandpass = 'helpyhelper1:helpyhelper1';
@@ -91,6 +91,8 @@ curl --insecure --data "host_config_key=$cbkey" $towerurl/api/v1/job_templates/$
 ALLDONE
 
 ## We execute the request for the provisioning callback
+print "CALLBACK\tRunning this callback command:\n" if ($output == 1);
+print "\t\t$callback\n" if ($output == 1);
 system($callback);
 
 
@@ -113,9 +115,11 @@ sleep($delay);
 ## We execute the delete command and finish out
 if ($output == 1){
 print<<ALLDONE;
-FINISHING	Deleting $newsrvname (ID $newsrvid) from inventory $invid. If the job
-		is failing due to inventory issues, try extending the delay value in
-		the variables settings area of this script, currently $delay seconds.
+FINISHING	Deleting $newsrvname (ID $newsrvid) from inventory $invid.
+
+		This should be plenty of delay, but if the job is failing due to
+		inventory issues, try extending the delay value in the variables
+		settings area of this script, currently $delay seconds.
 
 ALLDONE
 
