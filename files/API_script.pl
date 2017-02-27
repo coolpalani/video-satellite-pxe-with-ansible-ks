@@ -14,44 +14,71 @@
 #
 #  VARS TO SET:
 
-# user credentials for the limited account
-$username = 'helpyhelper1';
-$password = 'helpyhelper1';
+# Switch this to 1 for verbose, 0 for silent
+$output = 1;
+
+# user credentials for the limited account, entered as     user:password
+$userandpass = 'helpyhelper1:helpyhelper1';
 
 # inventory ID
 $invid = 11;
 
-# callback template ID
+# callback template ID and key
 $cbkid = 198;
+$cbkey = "KEV";
 
 # Ansible Tower URL
 $towerurl = 'https://ansibletower.lab';
 
+# Delay this many seconds between the provisioning callback and deleting the server from inventory.
+$delay = 30;
+
+
+################################################################################
+###              Nothing below here should need to be modified.              ###
+################################################################################
+
+if ($output == 1){
+
+print<<ALLDONE;
+------------------------
+INVENTORYID	$invid
+CALLBACKID	$cbkid
+CALLBACKKEY	$cbkey
+TOWERURL	$towerurl
+ALLDONE
+
+}
+
+
+## If we're not running with verbose output, we silence the curl reply
 
 # This turns the FQDN into a var (you might want to use an IP if your DNS isn't configured yet at this point in the build)
 chomp ($newsrvname = `hostname -f`);
+$newsrvdesc = "Manually Inserted Server";
+
 
 ## This defines the curl command with which we INSERT
 $insert =<<ALLDONE;
 curl -s -f -k -H 'Content-Type: application/json' -XPOST -d '{
 	"name": "$newsrvname",
-	"description": "Manually Inserted Server",
+	"description": "$newsrvdesc",
 	"inventory": "$invid",
 	"enabled": true
-}' --user helpyhelper1:helpyhelper1 $towerurl/api/v1/hosts/
+}' --user $userandpass $towerurl/api/v1/hosts/
 
 ALLDONE
 
 
-## Parse the reply and extract the first piece of it... next, remove everything that's not a digit.
+## Parse the reply and extract the first piece of it... next, take the small chunk and remove everything that's not a digit.
 ($newsrvid,undef) = split (/\,/,`$insert`);
 $newsrvid =~ s/[^0-9]//g;
-
+print "NEWSERVERID\t$newsrvid\n" if ($output == 1);
 
 
 ## This defines the command which runs the provisioning callback
 $callback =<<ALLDONE;
-curl --insecure --data "host_config_key=KEV" $towerurl/api/v1/job_templates/$cbkid/callback/
+curl --insecure --data "host_config_key=$cbkey" $towerurl/api/v1/job_templates/$cbkid/callback/
 ALLDONE
 
 ## We execute the request for the provisioning callback
@@ -60,15 +87,31 @@ system($callback);
 
 ## This defines the API call to delete the new system from the inventory
 $delete =<<ALLDONE;
-curl -k -H 'Content-Type: application/json' -XDELETE --user $username:$password $towerurl/api/v1/hosts/$newsrvid/
+curl -k -H 'Content-Type: application/json' -XDELETE --user $userandpass $towerurl/api/v1/hosts/$newsrvid/
 ALLDONE
 
 
 ## Race condition!!  We can't delete from inventory until the playbook starts
-sleep(30);
+if ($output == 1){
+print<<ALLDONE;
+DELAY SET	$delay seconds
+DELAYING	We need to delay $delay seconds to make sure the playbook is running before deleting the server
+ALLDONE
+}
+sleep($delay);
 
 
 ## We execute the delete command and finish out
+if ($output == 1){
+print<<ALLDONE;
+FINISHING	Deleting $newsrvname (ID $newsrvid) from inventory $invid. If the job
+		is failing due to inventory issues, try extending the delay value in
+		the variables settings area of this script, currently $delay seconds.
+
+ALLDONE
+
+}
+
 system($delete);
 
 
