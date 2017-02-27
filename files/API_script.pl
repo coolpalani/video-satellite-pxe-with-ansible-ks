@@ -2,6 +2,17 @@
 
 #### re-done in Perl, based on the API calls in the .sh version of this same script
 
+#	This script, when executed on the newly-provisioned server, is intended
+#	to reach out to Ansible Tower and perform the following:
+#		1 - Insert "this server" manually into an inventory
+#		2 - Perform a provisioning callback
+#		3 - Delete "this server" from that manual inventory
+#
+#	Use at your own risk and test repeatedly before deploying anywhere important.
+#	ENJOY!!
+#	Kevin Holmes :: Kev@GoKEV.com
+
+
 #  The following assumes: a manual inventory set up with ADMIN permissions
 #  assigned to the limited user (noted as user:password below).  My
 #  "Provisioning" inventory is inventory #11.
@@ -15,7 +26,7 @@
 #  VARS TO SET:
 
 # Switch this to 1 for verbose, 0 for silent
-$output = 1;
+$output = 0;
 
 # user credentials for the limited account, entered as     user:password
 $userandpass = 'helpyhelper1:helpyhelper1';
@@ -36,6 +47,7 @@ $delay = 30;
 
 ################################################################################
 ###              Nothing below here should need to be modified.              ###
+###                       though it might be fun!  :)                        ###
 ################################################################################
 
 if ($output == 1){
@@ -49,9 +61,6 @@ TOWERURL	$towerurl
 ALLDONE
 
 }
-
-
-## If we're not running with verbose output, we silence the curl reply
 
 # This turns the FQDN into a var (you might want to use an IP if your DNS isn't configured yet at this point in the build)
 chomp ($newsrvname = `hostname -f`);
