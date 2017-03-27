@@ -49,17 +49,10 @@ $delay = 30;
 ###                       though it might be fun!  :)                        ###
 ################################################################################
 
-
-# This turns the FQDN into a var (you might want to use an IP if your DNS isn't configured yet at this point in the build)
-chomp ($hostname = `hostname -f`);
-
 # This turns the IP address into a var
-chomp ($ipaddress = `ip -4 route get 8.8.8.8`);
-$ipaddress =~ s/\s+/ /g;
-$ipaddress =~ s/^.*src\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s.*/$1/g;
-
-#$newsrvname = $hostname;
-$newsrvname = $ipaddress;
+chomp ($newsrvname = `ip -4 route get 8.8.8.8`);
+$newsrvname =~ s/\s+/ /g;
+$newsrvname =~ s/^.*src\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s.*/$1/g;
 
 $newsrvdesc = "Manually Inserted Server";
 
