@@ -35,7 +35,7 @@ $userandpass = 'helpyhelper1:helpyhelper1';
 $invid = 11;
 
 # launch job template ID
-$cbkid = 152;
+$job_template_id = 152;
 
 # Ansible Tower URL
 $towerurl = 'https://ansibletower.lab';
@@ -49,21 +49,31 @@ $delay = 30;
 ###                       though it might be fun!  :)                        ###
 ################################################################################
 
+
+# This turns the FQDN into a var (you might want to use an IP if your DNS isn't configured yet at this point in the build)
+chomp ($hostname = `hostname -f`);
+
+# This turns the IP address into a var
+chomp ($ipaddress = `ip -4 route get 8.8.8.8`);
+$ipaddress =~ s/\s+/ /g;
+$ipaddress =~ s/^.*src\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s.*/$1/g;
+
+#$newsrvname = $hostname;
+$newsrvname = $ipaddress;
+
+$newsrvdesc = "Manually Inserted Server";
+
 if ($output == 1){
 
 print<<ALLDONE;
 ------------------------
 INVENTORYID	$invid
-CALLBACKID	$cbkid
-CALLBACKKEY	$cbkey
+NEWSERVER	$newsrvname
+TEMPLATEID	$job_template_id
 TOWERURL	$towerurl
 ALLDONE
 
 }
-
-# This turns the FQDN into a var (you might want to use an IP if your DNS isn't configured yet at this point in the build)
-chomp ($newsrvname = `hostname -f`);
-$newsrvdesc = "Manually Inserted Server";
 
 
 ## This defines the curl command with which we INSERT
@@ -96,7 +106,7 @@ ALLDONE
 $launch =~ s/\s+/ /g;
 
 ## We execute the request for the provisioning callback
-print "LAUNCH\tRunning this API launch command:\n" if ($output == 1);
+print "LAUNCH\t\tRunning this API launch command:\n" if ($output == 1);
 print "\t\t$launch\n" if ($output == 1);
 chomp($jobid = `$launch`);
 $jobid =~ s/^.*\:([0-9]+)\}$/$1/g;
